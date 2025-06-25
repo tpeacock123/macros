@@ -1,0 +1,16 @@
+*.root
+/.vscode
+/debugging_outputs
+/images
+/input_nuclroot_files
+/input_root_files
+/neut_build_dir
+/intvE_plots
+/leading_nuc_dist
+/NEUT6_nuiscompfiles
+/Prepared_neutfiles
+/tests
+/weight_histograms
+*.png
+*.pdf
+*/build
