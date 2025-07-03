@@ -20,7 +20,7 @@
 int main(){
     TH1::AddDirectory(false);
 
-    TFile *inputFile = TFile::Open("../../neut_build_dir/NHSG_8milevts_nobindingenergy.root");
+    TFile *inputFile = TFile::Open("../../neut_build_dir/NHSG_3milevts_kerethrow.root");
     // bin split into 50 bins under 50, 50 bins from 50 to 200, and then 50 bins from 200 to 2000
     // 0 - 49: 50 bins, 50 - 199 : 50 bins, 
     int binno = 201;
@@ -56,7 +56,7 @@ int main(){
     branch->SetAutoDelete(true);
 
     int start{0};
-    for(int i = start; i < 8000000; i++){
+    for(int i = start; i < 3000000; i++){
         if(i % 100000 == 0){
             std::cout << i << std::endl;
         }
@@ -71,14 +71,15 @@ int main(){
 
         daughter_nuclei_energies(nvect,daughterKE, ppflag);
  
-        if(daughterKE != 0 && ppflag == true) inE_vs_outE_histo_pp.Fill(initKE,daughterKE);
-        else if(daughterKE != 0 && ppflag == false) inE_vs_outE_histo_pn.Fill(initKE,daughterKE);
+        if(daughterKE != 0)  inE_vs_outE_histo_pp.Fill(initKE,daughterKE);
+       // if(daughterKE != 0 && ppflag == true) inE_vs_outE_histo_pp.Fill(initKE,daughterKE);
+        //else if(daughterKE != 0 && ppflag == false) inE_vs_outE_histo_pn.Fill(initKE,daughterKE);
         
     }
     inputFile->Close();
     delete inputFile;
 
-    TFile* outputFile = TFile::Open("incomingKE_vs_outgoingKE_rebin2.root", "recreate");
+    TFile* outputFile = TFile::Open("incomingKE_vs_outgoingKE_rebin_Kecut2.root", "recreate");
     inE_vs_outE_histo_pp.Write();
     inE_vs_outE_histo_pn.Write();
     outputFile->Close();

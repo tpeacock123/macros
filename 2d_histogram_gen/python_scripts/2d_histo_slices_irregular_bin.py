@@ -9,6 +9,8 @@ ROOT.gSystem.Load("libNEUTReWeight.so")
 ROOT.TH1.AddDirectory(False)
 ROOT.gStyle.SetOptStat(0)
 
+#this is the one to use!
+
 def moving_average(window, hist):
     noBins = hist.GetNbinsX()
     overflow = int((window-1)/2)
@@ -45,8 +47,8 @@ def moving_average(window, hist):
     return averageHisto
 
 
-outputFile = ROOT.TFile("incomingKE_vs_outgoingKE_rebin2.root") #opens input file
-f = outputFile.Get("incomingKE_vs_outgoingKE_pn") # opens inout histogram
+outputFile = ROOT.TFile("incomingKE_vs_outgoingKE_rebin_Kecut2.root") #opens input file
+f = outputFile.Get("incomingKE_vs_outgoingKE_pp") # opens inout histogram
 
 p0 = f.ProjectionX("p0",0,2000, "o") # obtains the 1d projection of the histogram as a whole (along the y axis, which has bins )
 
@@ -105,7 +107,7 @@ for i in range(50):
     y_bin_array.append(i*10)
 
 
-Ke_vs_FermiMomentum = ROOT.TH2D("Weight_on_x-sec_pn","Weight_on_x-sec",binno-1,array.array("d",x_bin_array),y_binno-1,array.array("d",y_bin_array))
+Ke_vs_FermiMomentum = ROOT.TH2D("Weight_on_x-sec_pp","Weight_on_x-sec",binno-1,array.array("d",x_bin_array),y_binno-1,array.array("d",y_bin_array))
 # converts the 1d projection histograms for each fermi momentum with weight on the y axis and the incoming energy on the x axis into 
 # a 2d histogram with energy on the x axis, fermi momentum on the y axis, and the weight on the z axis. this is then linearly interpolated 
 # to obtain the weight per energy and fermi momentum 
@@ -132,7 +134,7 @@ canv2.Write()
 canv3.Write()
 outputFile.Close()
 
-outputFile2 = ROOT.TFile.Open("neutinputFile_pn_rebin3.root", "recreate")
+outputFile2 = ROOT.TFile.Open("neutinputFile_pp_rebin_onetable_kecut.root", "recreate")
 Ke_vs_FermiMomentum.Write()
 outputFile2.Close()
 

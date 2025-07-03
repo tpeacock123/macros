@@ -32,7 +32,7 @@ def noint_hist_getter(name):
     multiplicity_leadingN_hist = ROOT.TH2D("multiplicityN_Leading_{}".format(name),"multiplicityN_leading",12,0,12,100,0.,250.0)
     for event in t:
         counter +=1
-        if counter == 500000:
+        if counter == 100000:
             break
         nvect = event.vectorbranch
         nvt =  nucleon_nvect_reader(nvect,2212)
@@ -119,10 +119,19 @@ def nucleon_histograms():
     mp_hist = []
 
 
-    #hist_name = ["scale_factor_neutron_test1_pboff", "scale_factor_neutron_test2_removed_first_check", "scale_factor_neutron_test1_oldpb"]
-    #hist_name = ["scale_factor_test2_noscaling", "scale_factor_test6_kecut", "scale_factor_test2_ogPauliBlock"]
-    hist_name = ["scale_factor_test5_newbintests", "scale_factor_test6_kecut", "scale_factor_test2_ogPauliBlock"]
-    title_name = ["new PB ","new PB, kecut","original PB"]
+#    hist_name = ["scale_factor_neutron_test1_pboff", "scale_factor_neutron_test2_removed_first_check", "scale_factor_neutron_test1_oldpb"]
+#    hist_name = ["scale_factor_test2_noscaling", "scale_factor_test_rethrown_kinematics", "scale_factor_test2_ogPauliBlock"]
+#    hist_name = ["scale_factor_test5_newbintests", "scale_factor_test_kecut_onetable", "scale_factor_test2_ogPauliBlock"]
+#    hist_name =  ["scale_factor_test_kecut_nopb", "scale_factor_test_KEcut", "scale_factor_test2_noscaling"]
+   # hist_name = ["nucleon_scale_factor_test_single_KEcut", "scale_factor_test_kecut_onetable", "scale_factor_test2_ogPauliBlock"]
+
+#    hist_name = ["scale_factor_test2_noscaling", "scale_factor_test_hybrid2", "scale_factor_test2_ogPauliBlock"]
+    hist_name = ["switch_test_sf","switch_test_hybrid_boundary200","switch_test_original"]
+    title_name =["scale factor", "hybrid_boundary200","original PB"]
+#    title_name = ["new PB","new PB: ke rethrow","Original PB"]
+ #   hist_name = ["scale_factor_test_newPB_KEcut_regulartable","scale_factor_test_newPB_KErethrow_regulartable","scale_factor_test2_ogPauliBlock"]
+#    title_name = ["no PB","new PB - hybrid", "original PB"]
+
     for i in hist_name:
         temp_no_int,temp_surv,temp_int,leading_temp, multiplicity_temp, mp_temp, leading_temp_N,mp_temp_N = noint_hist_getter(i)
         noint_hist.append(temp_no_int)
@@ -135,17 +144,20 @@ def nucleon_histograms():
         mp_hist.append(mp_temp)
 
 
-    noint_hist[2].GetXaxis().SetTitle("Survival Proton KE [MeV]")
+    noint_hist[0].GetXaxis().SetTitle("Survival Proton KE [MeV]")
     no_int_canv = ROOT.TCanvas("no_interaction", " ", 800, 600)
+    ROOT.gPad.SetFrameFillStyle(0)
+
     grid = gridmaker()
-    noint_hist[0].Draw()
+    noint_hist[0].Draw("hist")
     noint_hist[0].SetLineWidth(2)
-    noint_hist[1].Draw("same")
+    noint_hist[1].Draw("histsame")
     noint_hist[1].SetLineColor(2)
     noint_hist[1].SetLineWidth(2)
-    noint_hist[2].Draw("same")
+    noint_hist[2].Draw("histsame")
     noint_hist[2].SetLineColor(3)
     noint_hist[2].SetLineWidth(2)
+
     legend2 = ROOT.TLegend(0.5,0.7,0.9,0.9)
     legend2.SetHeader("Data Source","c"); 
     legend2.AddEntry(noint_hist[0],title_name[0],"l"); 
@@ -153,8 +165,7 @@ def nucleon_histograms():
     legend2.AddEntry(noint_hist[2],title_name[2],"l"); 
     legend2.Draw()
 
-
-    surv_hist[2].GetXaxis().SetTitle("Survival Proton KE [MeV]")
+    surv_hist[0].GetXaxis().SetTitle("Survival Proton KE [MeV]")
     surv_canv = ROOT.TCanvas("survival", " ", 800, 600)
     grid = gridmaker()
     surv_hist[0].Draw()
@@ -173,7 +184,7 @@ def nucleon_histograms():
     legend1.Draw()
 
 
-    int_hist[2].GetXaxis().SetTitle("Survival Proton KE [MeV]")
+    int_hist[0].GetXaxis().SetTitle("Survival Proton KE [MeV]")
     int_canv = ROOT.TCanvas("interaction", " ", 800, 600)
     grid = gridmaker()
     int_hist[0].Draw("hist")
@@ -192,7 +203,7 @@ def nucleon_histograms():
     legend.Draw()
 
 
-    leading_hist[2].GetXaxis().SetTitle("Survival Proton KE [MeV]")
+    leading_hist[0].GetXaxis().SetTitle("Survival Proton KE [MeV]")
     leading_canv = ROOT.TCanvas("leading", " ", 800, 600)
     grid = gridmaker()
     leading_hist[0].Draw("hist")
@@ -211,17 +222,17 @@ def nucleon_histograms():
     legend4.Draw()
 
 
-    multiplicity_hist[2].GetXaxis().SetTitle("Survival Proton KE [MeV]")
+    multiplicity_hist[0].GetXaxis().SetTitle("Survival Proton KE [MeV]")
     multiplicity_canv = ROOT.TCanvas("multiplicity", " ", 800, 600)
     grid = gridmaker()
-    multiplicity_hist[2].Draw("hist")
-    multiplicity_hist[2].SetLineWidth(2)
+    multiplicity_hist[0].Draw("hist")
+    multiplicity_hist[0].SetLineWidth(2)
     multiplicity_hist[1].Draw("histsame")
     multiplicity_hist[1].SetLineColor(2)
     multiplicity_hist[1].SetLineWidth(2)
-    multiplicity_hist[0].Draw("histsame")
-    multiplicity_hist[0].SetLineColor(3)
-    multiplicity_hist[0].SetLineWidth(2)
+    multiplicity_hist[2].Draw("histsame")
+    multiplicity_hist[2].SetLineColor(3)
+    multiplicity_hist[2].SetLineWidth(2)
     legend6 = ROOT.TLegend(0.5,0.7,0.9,0.9)
     legend6.SetHeader("Data Source","c"); 
     legend6.AddEntry(multiplicity_hist[0],title_name[0],"l"); 
@@ -230,6 +241,7 @@ def nucleon_histograms():
     legend6.Draw()
 
 
+    leading_hist_N[0].GetXaxis().SetTitle("Survival Proton KE [MeV]")
     leading_n_canv = ROOT.TCanvas("leading_n", " ", 800, 600)
     grid = gridmaker()
     leading_hist_N[0].Draw("hist")
@@ -247,8 +259,8 @@ def nucleon_histograms():
     legend5.AddEntry(leading_hist_N[2],title_name[2],"l"); 
     legend5.Draw()
 
-
-    file = ROOT.TFile("survival_hist_proton_test_newke_comp.root", "RECREATE")  
+#    file = ROOT.TFile("survival_hist_proton_hybrid3.root", "RECREATE")  
+    file = ROOT.TFile("switch_test2.root","RECREATE")
     surv_canv.Write()
     no_int_canv.Write()
     int_canv.Write()

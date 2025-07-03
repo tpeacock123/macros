@@ -12,13 +12,17 @@ def gridmaker(): #just sets up grids
     grid.SetGrid()
     return grid
 
-protonFile= ROOT.TFile("survival_hist_proton_tests_new.root")
+protonFile= ROOT.TFile("survival_hist_proton_test_newke_comp.root")
 
-protonMultiplicityNoPB = protonFile.Get("multiplicity_scale_factor_test2_noscaling").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test2_noscaling")
-protonMultiplicityNewPB = protonFile.Get("multiplicity_scale_factor_test5_newbintests").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test5_newbintests")
+#protonMultiplicityNoPB = protonFile.Get("multiplicity_scale_factor_test2_noscaling").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test2_noscaling")
+#protonMultiplicityNewPB = protonFile.Get("multiplicity_scale_factor_test5_newbintests").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test5_newbintests")
+#protonMultiplicityOldPB = protonFile.Get("multiplicity_scale_factor_test2_ogPauliBlock").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test2_ogPauliBlock")
+
+protonMultiplicityNoPB = protonFile.Get("multiplicity_scale_factor_test5_newbintests").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test5_newbintests")
+protonMultiplicityNewPB = protonFile.Get("multiplicity_scale_factor_test6_kecut").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test6_kecut")
 protonMultiplicityOldPB = protonFile.Get("multiplicity_scale_factor_test2_ogPauliBlock").GetListOfPrimitives().FindObject("multiplicity_Leading_scale_factor_test2_ogPauliBlock")
 
-title_name = ["no PB ","new PB","original PB"]
+title_name = ["new PB","new PB: rebinned coarser","original PB"]
 canv_list = []
 NoPBList = []
 NewPBList = []
@@ -38,19 +42,19 @@ for i in range(1,14):
 for i in range(0,13):
     canv_list.append(ROOT.TCanvas("leading_proton_momentum_multiplicity_{}".format(i), " ", 800, 600))
     grid = gridmaker()
-    NoPBList[i].SetTitle("leading_proton_momentum_multiplicity_{}".format(i+1))
-    NoPBList[i].GetXaxis().SetTitle("Survival Proton KE [MeV]")
-    NoPBList[i].Draw()
-    NoPBList[i].SetLineWidth(2)
+    OldPBList[i].SetTitle("leading_proton_momentum_multiplicity_{}".format(i+1))
+    OldPBList[i].GetXaxis().SetTitle("Survival Proton KE [MeV]")
+    OldPBList[i].Draw()
+    OldPBList[i].SetLineWidth(2)
     NewPBList[i].Draw("same")
     NewPBList[i].SetLineColor(2)
     NewPBList[i].SetLineWidth(2)
-    OldPBList[i].Draw("same")
-    OldPBList[i].SetLineColor(3)
-    OldPBList[i].SetLineWidth(2)
+    NoPBList[i].Draw("same")
+    NoPBList[i].SetLineColor(3)
+    NoPBList[i].SetLineWidth(2)
     legendList[i].Draw()
 
-file = ROOT.TFile("2d_multi_p_slices.root", "RECREATE")  
+file = ROOT.TFile("2d_multi_p_slices_kecomp.root", "RECREATE")  
 for i in range(len(canv_list)):
     canv_list[i].Write()
 
